@@ -1,0 +1,72 @@
+{
+  "name": "@ar-js-org/ar.js",
+  "version": "3.4.8",
+  "description": "Efficient Augmented Reality for the Web",
+  "main": "./aframe/build/aframe-ar.js",
+  "scripts": {
+    "format-check": "prettier --check .",
+    "format": "prettier --write .",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode=production",
+    "build:dev": "webpack --mode=development --progress --watch",
+    "server": "npx http-server -c -1",
+    "prepare": "simple-git-hooks"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
+  },
+  "files": [
+    "three.js/build",
+    "aframe/build"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AR-js-org/AR.js.git"
+  },
+  "keywords": [
+    "AR.js",
+    "artoolkit5-js",
+    "AR",
+    "VR",
+    "three.js",
+    "aframe",
+    "augmented reality",
+    "location based",
+    "image tracking",
+    "marker based"
+  ],
+  "author": "jeromeetienne@gmail.com",
+  "contributors": [
+    {
+      "name": "Nicolò Carpignoli",
+      "email": "nicolocarpignoli@gmail.com",
+      "url": "https://nicolocarpignoli.github.io/me"
+    },
+    {
+      "name": "Walter Perdan",
+      "email": "info@walterperdan.com",
+      "url": "https://www.walterperdan.com/"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AR-js-org/AR.js/issues"
+  },
+  "homepage": "https://github.com/AR-js-org/AR.js/",
+  "devDependencies": {
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.4.2",
+    "simple-git-hooks": "^2.13.1",
+    "webpack": "^5.105.4",
+    "webpack-cli": "7.0.0",
+    "worker-loader": "^3.0.8"
+  },
+  "dependencies": {
+    "@ar-js-org/artoolkit5-js": "^0.3.2",
+    "aframe": "^1.6.0",
+    "three": "^0.164.0"
+  },
+  "lint-staged": {
+    "*.js": "prettier --write"
+  }
+}

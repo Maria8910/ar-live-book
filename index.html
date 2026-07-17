@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>AR Live Book</title>
+
+  <link rel="stylesheet" href="./css/style.css">
+
+  <!-- A-Frame 1.0.4 (local) -->
+  <script src="./js/aframe-1-0-4.min.js"></script>
+  <!-- AR.js 3.3.3 NFT (local — proven NFT working build) -->
+  <script src="./js/aframe-ar-nft-3-3-3.js"></script>
+</head>
+
+<body>
+  <!-- Отладка: прямое отображение камеры -->
+  <video id="debug-camera" autoplay playsinline muted style="position: fixed; top: 10px; right: 10px; width: 200px; height: 150px; border: 2px solid red; z-index: 9999; transform: scaleX(-1);"></video>
+
+  <!-- HUD Overlay -->
+  <div id="hud">
+    <div id="hud-top">
+      <h1 id="app-title">AR Live Book</h1>
+      <div id="status-badge" class="badge badge-loading">
+        <span class="spinner small"></span>
+        <span id="status-text">Загрузка…</span>
+      </div>
+      <div id="camera-error" class="error hidden">
+        Не удалось получить доступ к камере. Пожалуйста, разрешите доступ в настройках браузера.
+      </div>
+    </div>
+
+    <div id="hint-overlay">
+      <p id="hint-text">Наведите камеру на картинку</p>
+    </div>
+
+    <button id="restart-camera-btn" class="restart-btn" title="Перезапустить камеру">
+      &#x21bb; Перезапустить камеру
+    </button>
+  </div>
+
+  <!-- Loading overlay for NFT descriptors -->
+  <div id="nft-loading" class="loading-overlay">
+    <div class="loading-content">
+      <span class="spinner large"></span>
+      <p id="nft-loading-text">Загрузка дескрипторов…</p>
+    </div>
+  </div>
+
+  <!-- Video overlay для отладки -->
+  <video id="debug-video-overlay" playsinline muted loop
+    style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+           width:300px;height:300px;object-fit:cover;
+           border:3px solid cyan;z-index:9998;
+           display:none;background:#000;"></video>
+
+  <!-- A-Frame AR Scene -->
+  <a-scene
+    id="ar-scene"
+    embedded
+    vr-mode-enabled="false"
+    renderer="antialias: true; alpha: true; precision: high; colorManagement: true;"
+    arjs="sourceType: webcam;
+          debugUIEnabled: false;"
+  >
+    <!-- Assets — видео с autoplay -->
+    <a-assets>
+      <video
+        id="video1"
+        src="./videos/video1.mp4"
+        preload="auto"
+        muted
+        loop
+        playsinline
+        webkit-playsinline
+        crossorigin="anonymous"
+      ></video>
+      <video
+        id="video2"
+        src="./videos/video2.mp4"
+        preload="auto"
+        muted
+        loop
+        playsinline
+        webkit-playsinline
+        crossorigin="anonymous"
+      ></video>
+      <video
+        id="video3"
+        src="./videos/video3.mp4"
+        preload="auto"
+        muted
+        loop
+        playsinline
+        webkit-playsinline
+        crossorigin="anonymous"
+      ></video>
+    </a-assets>
+
+    <!-- NFT Marker 1 -->
+    <a-nft
+      id="nft-marker-1"
+      type="nft"
+      url="./nft/image1"
+      smooth="true"
+      smoothCount="10"
+      smoothTolerance="0.01"
+      smoothThreshold="2"
+      emitevents="true"
+    >
+      <a-video
+        id="ar-video-1"
+        src="#video1"
+        position="0 0 0"
+        rotation="-90 0 0"
+        width="1"
+        height="0.75"
+      ></a-video>
+    </a-nft>
+
+    <!-- NFT Marker 2 -->
+    <a-nft
+      id="nft-marker-2"
+      type="nft"
+      url="./nft/image2"
+      smooth="true"
+      smoothCount="10"
+      smoothTolerance="0.01"
+      smoothThreshold="2"
+      emitevents="true"
+    >
+      <a-video
+        id="ar-video-2"
+        src="#video2"
+        position="0 0 0"
+        rotation="-90 0 0"
+        width="1"
+        height="0.75"
+      ></a-video>
+    </a-nft>
+
+    <!-- NFT Marker 3 -->
+    <a-nft
+      id="nft-marker-3"
+      type="nft"
+      url="./nft/image3"
+      smooth="true"
+      smoothCount="10"
+      smoothTolerance="0.01"
+      smoothThreshold="2"
+      emitevents="true"
+    >
+      <a-video
+        id="ar-video-3"
+        src="#video3"
+        position="0 0 0"
+        rotation="-90 0 0"
+        width="1"
+        height="0.75"
+      ></a-video>
+    </a-nft>
+
+    <!-- Camera -->
+    <a-entity camera></a-entity>
+  </a-scene>
+
+  <!-- Main logic -->
+  <script src="./js/main.js"></script>
+</body>
+</html>

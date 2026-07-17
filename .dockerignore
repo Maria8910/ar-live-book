@@ -1,0 +1,11 @@
+# .dockerignore — не включать в образ
+
+node_modules
+.git
+*.md
+!README.md
+nft-assets/*.png
+nft-assets/*.jpg
+nft-assets/*.jpeg
+.DS_Store
+Thumbs.db
