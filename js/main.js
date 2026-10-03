@@ -16,6 +16,7 @@
   const nftLoadingText = document.getElementById("nft-loading-text");
   const hintOverlay = document.getElementById("hint-overlay");
   const restartBtn = document.getElementById("restart-camera-btn");
+  const debugOverlay = document.getElementById("debug-overlay");
 
   // ===================== Config =====================
   const MARKERS = [
@@ -201,26 +202,10 @@
         hideEl(hintOverlay);
 
         const videoEl = getVideoElement(marker.videoId);
-        const arVideoEl = getArVideoElement(marker.arVideoId);
-        const debugOverlay = document.getElementById("debug-video-overlay");
-
-        // --- DEBUG: показываем квадратное видео-окно ---
-        if (debugOverlay) {
-          debugOverlay.src = videoEl.src;
-          debugOverlay.pause();
-          debugOverlay.currentTime = 0;
-          debugOverlay.play().catch(e => log("video", `overlay play error: ${e.message}`));
-          debugOverlay.style.display = "block";
-          log("video", `DEBUG overlay shown: ${marker.videoId}`);
-        }
-
-        // Прямо ставим opacity=1 без анимации
-        if (arVideoEl) {
-          arVideoEl.setAttribute("material", "opacity", 1);
-          arVideoEl.setAttribute("visible", true);
-          log("video", `Opacity set to 1: ${arVideoEl.id}`);
-        }
-        playVideo(videoEl);
+        debugOverlay.src = videoEl.src;
+        debugOverlay.currentTime = 0;
+        debugOverlay.style.display = "block";
+        debugOverlay.play().catch(() => {});
       });
 
       // markerLost
@@ -229,22 +214,9 @@
         setStatus("AR готов", "ready");
         showEl(hintOverlay);
 
-        const videoEl = getVideoElement(marker.videoId);
-        const arVideoEl = getArVideoElement(marker.arVideoId);
-        const debugOverlay = document.getElementById("debug-video-overlay");
-
-        // Скрываем оверлей
-        if (debugOverlay) {
-          debugOverlay.pause();
-          debugOverlay.src = "";
-          debugOverlay.style.display = "none";
-          log("video", `DEBUG overlay hidden`);
-        }
-
-        if (arVideoEl) {
-          arVideoEl.setAttribute("material", "opacity", 0);
-        }
-        stopVideo(videoEl);
+        debugOverlay.pause();
+        debugOverlay.src = "";
+        debugOverlay.style.display = "none";
       });
     });
   }
@@ -349,6 +321,20 @@
 
     log("init", "Starting AR Live Book…");
 
+    // Fix: convert relative NFT marker URLs to root-relative paths
+    // This ensures Blob workers can resolve paths correctly
+    MARKERS.forEach((marker) => {
+      const markerEl = document.getElementById(marker.id);
+      if (markerEl) {
+        const currentUrl = markerEl.getAttribute("url");
+        if (currentUrl && currentUrl.startsWith("./")) {
+          const rootUrl = currentUrl.replace("./", "/");
+          markerEl.setAttribute("url", rootUrl);
+          log("init", `Fixed URL for ${marker.id}: ${rootUrl}`);
+        }
+      }
+    });
+
     const stream = await requestCameraAccess();
     if (!stream) {
       log("init", "Camera access denied — stopping");
@@ -358,6 +344,29 @@
     setupMarkerEvents();
     setupSceneEvents();
     setupNftLoading();
+
+    // Fallback: send arjs-video-loaded when AR.js creates its video element
+    // NFT workers wait for this event to start processing frames
+    var checkArjsVideo = setInterval(function () {
+      var vid = document.querySelector("#arjs-video");
+      if (vid) {
+        vid.addEventListener("loadeddata", function () {
+          clearInterval(checkArjsVideo);
+          window.dispatchEvent(new CustomEvent("arjs-video-loaded", {
+            detail: { component: vid }
+          }));
+          log("event", "arjs-video-loaded (on loadeddata)");
+        });
+        // Also fire immediately if already loaded
+        if (vid.readyState >= 2) {
+          clearInterval(checkArjsVideo);
+          window.dispatchEvent(new CustomEvent("arjs-video-loaded", {
+            detail: { component: vid }
+          }));
+          log("event", "arjs-video-loaded (immediate dispatch)");
+        }
+      }
+    }, 300);
 
     setTimeout(() => {
       hideEl(nftLoading);

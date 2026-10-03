@@ -49,12 +49,12 @@
     </div>
   </div>
 
-  <!-- Video overlay для отладки -->
-  <video id="debug-video-overlay" playsinline muted loop
+  <!-- Debug overlay: видео при отслеживании -->
+  <video id="debug-overlay" playsinline muted loop
     style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
-           width:300px;height:300px;object-fit:cover;
-           border:3px solid cyan;z-index:9998;
-           display:none;background:#000;"></video>
+           width:480px;height:480px;object-fit:cover;
+           border:3px solid #00ffff;z-index:9998;
+           display:none;background:#000;border-radius:8px;"></video>
 
   <!-- A-Frame AR Scene -->
   <a-scene
