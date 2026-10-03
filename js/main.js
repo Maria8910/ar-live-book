@@ -37,6 +37,60 @@
       arVideoId: "ar-video-3",
       label: "image3",
     },
+    {
+      id: "nft-marker-4",
+      videoId: "video4",
+      arVideoId: "ar-video-4",
+      label: "image4",
+    },
+    {
+      id: "nft-marker-5",
+      videoId: "video5",
+      arVideoId: "ar-video-5",
+      label: "image5",
+    },
+    {
+      id: "nft-marker-6",
+      videoId: "video6",
+      arVideoId: "ar-video-6",
+      label: "image6",
+    },
+    {
+      id: "nft-marker-7",
+      videoId: "video7",
+      arVideoId: "ar-video-7",
+      label: "image7",
+    },
+    {
+      id: "nft-marker-8",
+      videoId: "video8",
+      arVideoId: "ar-video-8",
+      label: "image8",
+    },
+    {
+      id: "nft-marker-9",
+      videoId: "video9",
+      arVideoId: "ar-video-9",
+      label: "image9",
+    },
+    {
+      id: "nft-marker-10",
+      videoId: "video10",
+      arVideoId: "ar-video-10",
+      label: "image10",
+    },
+    {
+      id: "nft-marker-11",
+      videoId: "video11",
+      arVideoId: "ar-video-11",
+      label: "image11",
+    },
+    {
+      id: "nft-marker-12",
+      videoId: "video12",
+      arVideoId: "ar-video-12",
+      label: "image12",
+    },
   ];
 
   const FADE_DURATION = 300; // ms
